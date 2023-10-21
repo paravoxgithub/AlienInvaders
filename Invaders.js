@@ -7,13 +7,22 @@ let enemy: game.LedSprite = null
 let delay = 1000
 
 // Presets
-let life = 3
+game.setLife(3)
 let score = 0
 
 // Change Delay on Elimination
 basic.forever(() => {
     delay = 1000 - (score * 10)
 })
+
+// Check Enemy life
+function checkEnemyReachedBottom() {
+    if (enemy && enemy.y() >= 4) {
+        game.removeLife(1)
+        console.log(game.life())
+        enemy.delete()
+    }
+}
 
 // Check if Enemy was shot
 basic.forever(() => {
@@ -52,7 +61,8 @@ function SpawnEnemy() {
         enemy.changeYBy(1)
         basic.pause(delay)
     }
-    console.log(life)
+    
+    checkEnemyReachedBottom()
     enemy.delete()
 }
 
@@ -69,16 +79,6 @@ basic.forever(() => {
         SpawnEnemy()
     }
 })
-
-
-// Check Lives
-basic.forever(() => {
-    if (life == 0) {
-        game.gameOver()
-        game.setScore(score)
-    }
-})
-
 // Shoot
 input.onButtonPressed(Button.AB, () => {
     // Shorten Code to look better.
