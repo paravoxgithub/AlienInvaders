@@ -1,5 +1,5 @@
 // Variables
-let ship = game.createSprite(2,5)
+let ship = game.createSprite(2, 5)
 let BulletTravelSpeed = 250
 let shot = false
 let shoot: game.LedSprite = null
@@ -11,26 +11,23 @@ let life = 3
 let score = 0
 
 // Change Delay on Elimination
-basic.forever(() => 
-{
-    delay = 1000 - (score*10)
+basic.forever(() => {
+    delay = 1000 - (score * 10)
 })
 
 // Check if Enemy was shot
-basic.forever(() =>
-{
+basic.forever(() => {
     // Elim Sound Code
     let style = WaveShape.Sine
     let soundExpression = SoundExpressionEffect.None
     let interpolation = InterpolationCurve.Logarithmic
     let playback = music.PlaybackMode.InBackground
-    if (shot)
-    {
-        if (shoot.isTouching(enemy))
-        {
+    if (shot) {
+        if (shoot.isTouching(enemy)) {
             music.play(
                 music.createSoundExpression(style, 1790, 1, 255, 255, 200, soundExpression, interpolation), playback
             )
+            score +=1
             // Eliminates Enemy
             enemy.delete()
         }
@@ -39,8 +36,7 @@ basic.forever(() =>
 
 // Movement
 // / Left
-input.onButtonPressed(Button.A, () => 
-{
+input.onButtonPressed(Button.A, () => {
     ship.changeXBy(-1)
 })
 
@@ -49,15 +45,18 @@ input.onButtonPressed(Button.B, () => {
     ship.changeXBy(1)
 })
 
-function SpawnEnemy() 
-{
+function SpawnEnemy() {
     enemy = game.createSprite(randint(0, 5), 0)
     pause(delay)
     for (let index = 0; index < 4; index++) {
         enemy.changeYBy(1)
         basic.pause(delay)
     }
-    life -= 1
+    if (enemy.y() == 5)
+    {
+        life -=1
+    }
+    console.log(life)
     enemy.delete()
 }
 
@@ -68,8 +67,7 @@ basic.forever(() => {
 
 // Check Lives
 basic.forever(() => {
-    if (life == 0) 
-    {
+    if (life == 0) {
         game.gameOver()
         game.setScore(score)
     }
@@ -93,9 +91,9 @@ input.onButtonPressed(Button.AB, () => {
     shot = true
     for (let i = 0; i < 4; i++) {
         shoot.changeYBy(-1)
-        console.log(score)
         pause(BulletTravelSpeed)
-    }   
+    }
     pause(500)
     shoot.delete()
+    console.log(score)
 })
