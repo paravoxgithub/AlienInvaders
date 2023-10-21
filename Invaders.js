@@ -52,10 +52,6 @@ function SpawnEnemy() {
         enemy.changeYBy(1)
         basic.pause(delay)
     }
-    if (enemy.y() == 5)
-    {
-        life -=1
-    }
     console.log(life)
     enemy.delete()
 }
@@ -64,6 +60,16 @@ function SpawnEnemy() {
 basic.forever(() => {
     SpawnEnemy()
 })
+
+// Second Enemy
+
+basic.forever(() => {
+    if (score == 10 || score > 10)
+    {
+        SpawnEnemy()
+    }
+})
+
 
 // Check Lives
 basic.forever(() => {
